@@ -1,0 +1,27 @@
+
+api:
+     image: jenkins/jenkins:lts    # pushed to docker registry with tag dockerregistry.ecosmob.net:5000/jenkins:lts
+     #image: jenkinsrootuser:v1      # From jenkins/jenkins:lts and USER root and then build image
+     #image: jenkinsnodejs
+     user: root
+     privileged: true   
+     restart: always
+     net: "host"
+     ports:
+             - '8080:8080'
+             - '50000:50000'
+     volumes:
+             - ./jenkins-data:/var/lib/jenkins
+               #- /var/lib/zap-report:/var/jenkins_home/zap-report/
+             - /.jenkins-cache:/var/cache/jenkins
+             - /var/run/docker.sock:/var/run/docker.sock
+             - /usr/bin/docker:/usr/bin/docker
+             - .ssh:/root/.ssh
+               #- /bin/zap-cli:/usr/bin/zap-cli
+             #- ./sonar-scanner.properties:/var/lib/jenkins/tools/hudson.plugins.sonar.SonarRunnerInstallation/Sonar-Scanner/conf/sonar-scanner.properties      
+
+     environment:
+             - JENKINS_HOME=/var/lib/jenkins
+             - DOCKER_HOST=ssh://sammy@3.90.83.162
+
+     #        - SONAR_SCANNER_OPTS="-Xmx1024m"
